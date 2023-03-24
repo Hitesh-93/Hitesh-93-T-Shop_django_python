@@ -1,0 +1,65 @@
+{% extends './header.html' %}
+{% load crispy_forms_tags %}
+{% load tshirt_tags %}
+
+{% block content %}
+
+<div class="container">
+    <div class="p-2">
+        <div class="display-8">Checkout</div>
+        <hr>
+        <div class="row">
+            <div class="col-lg-6 border rounded p-4">
+                <form action="/checkout/" method="POST">
+                    {% csrf_token %}
+
+                    {{ form|crispy }}
+                    <hr>
+
+                    <div class="form-group">
+                        <input class="btn btn-outline-dark" type="submit" value="Checkout">
+                    </div>
+                </form>
+            </div>
+
+            <div class="col">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Tshirt</th>
+                            <th>Size</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{item.size.tshirt.name}}</td>
+                            <td>{{item.size.size}}</td>
+                            <td>{% clc_sale_price item.size.price item.size.tshirt.discount as amt %}{{amt|rupee}}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <hr>
+                <div>
+                    <div class="display-8 alert "> Total Payble Amount : {{cart | final_bill | rupee }} </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+
+
+<!-- 
+
+
+
+ -->

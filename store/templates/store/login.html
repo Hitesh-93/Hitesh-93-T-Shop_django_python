@@ -1,0 +1,24 @@
+{% extends "./header.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="col-lg-4 mx-auto mt-4 border rounded">
+    <form action="/login/" method="post">
+        {% csrf_token %}
+
+        <h1 class="display-4 text-center">Login Here</h1>
+        <div class="text-cente">
+            <img src="" alt="">
+        </div>
+        <hr>
+
+        {{ form|crispy }}
+
+        <div class="form-group">
+            <input class="btn btn-primary" type="submit" value="Login">
+        </div>
+    </form>
+</div>
+
+{% endblock %}
