@@ -39,6 +39,33 @@ def show_product(request, slug):
 
 def home(request):
 
+    query = request.GET
+    tshirts = []
+    tshirts = Tshirt.objects.all()
+    
+    idelfor = query.get('idelfor')
+    brand = query.get('brand')
+    color = query.get('color')
+    occasion = query.get('occasion')
+    sleeve = query.get('sleeve')
+    necktype = query.get('necktype')
+
+
+    if idelfor !='' and idelfor is not None:
+        tshirts = tshirts.filter(ideal_for__slug = idelfor)
+    if brand !='' and brand is not None:
+        tshirts = tshirts.filter(brand__slug = brand)
+    if color !='' and color is not None:
+        tshirts = tshirts.filter(color__slug = color)
+    if occasion !='' and occasion is not None:
+        tshirts = tshirts.filter(occasion__slug = occasion)
+    if sleeve !='' and sleeve is not None:
+        tshirts = tshirts.filter(sleev__slug = sleeve)
+    if necktype !='' and necktype is not None:
+        tshirts = tshirts.filter(neck_type__slug = necktype)
+    
+    
+
     brands = Brand.objects.all()
     idealFor = IdealFor.objects.all()
     colors = Color.objects.all()
@@ -46,7 +73,7 @@ def home(request):
     sleeves = Sleev.objects.all()
     neckTypes = NeckType.objects.all()
 
-    tshirts = Tshirt.objects.all()
+    # tshirts = Tshirt.objects.all()
         
     context={
         "tshirts":tshirts,

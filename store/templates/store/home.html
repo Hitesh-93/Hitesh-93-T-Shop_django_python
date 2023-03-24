@@ -1,20 +1,22 @@
 {% extends "./header.html" %}
 {% load tshirt_tags %}
+{% load filter_tags %}
 
 {% block content %}
 <div class="container-fluid">
     <div class="row m-1">
         <div class="col col-2 border mt-4 ">
-            <form action="/">
+            <form id="filterForm" action="/">
                 <!-- filters -->
                 <div>
                     <!-- Ideal_For -->
                     <div class="form-group">
                         <label for="idealfor">Ideal For</label>
-                        <select name="idelfor" class="form-control" id="idealfor">
+                        <select onchange="submitForm()" name="idelfor" class="form-control" id="idealfor">
                             <option value="">Select</option>
                             {% for item in idealFor %}
-                            <option value="{{item.slug}}">{{item.title}}</option>
+                            <option {% selected_filter request.GET.idelfor item.slug %} value="{{item.slug}}">
+                                {{item.title}}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -22,10 +24,11 @@
                     <!-- Brands -->
                     <div class="form-group">
                         <label for="brand">Brands</label>
-                        <select name="brand" class="form-control" id="brand">
+                        <select onchange="submitForm()" name="brand" class="form-control" id="brand">
                             <option value="">Select Brand</option>
-                            {% for item in brands %}
-                            <option value="{{item.slug}}">{{item.title}}</option>
+                            {% for brand in brands %}
+                            <option {% selected_filter request.GET.brand brand.slug %} value="{{brand.slug}}">
+                                {{brand.title}}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -33,10 +36,11 @@
                     <!-- Colors -->
                     <div class="form-group">
                         <label for="color">Colors</label>
-                        <select name="color" class="form-control" id="color">
+                        <select onchange="submitForm()" name="color" class="form-control" id="color">
                             <option value="">Select Color</option>
                             {% for item in colors %}
-                            <option value="{{item.slug}}">{{item.title}}</option>
+                            <option {% selected_filter request.GET.color item.slug %} value="{{item.slug}}">
+                                {{item.title}}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -44,10 +48,11 @@
                     <!-- Occasion -->
                     <div class="form-group">
                         <label for="occasion">Occasion</label>
-                        <select name="occasion" class="form-control" id="occasion">
+                        <select onchange="submitForm()" name="occasion" class="form-control" id="occasion">
                             <option value="">Select Occasion</option>
                             {% for item in occasions %}
-                            <option value="{{item.slug}}">{{item.title}}</option>
+                            <option {% selected_filter request.GET.occasion item.slug %} value="{{item.slug}}">
+                                {{item.title}}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -55,10 +60,11 @@
                     <!-- Sleeve -->
                     <div class="form-group">
                         <label for="sleeve">Sleeves</label>
-                        <select name="sleeve" class="form-control" id="sleeve">
+                        <select onchange="submitForm()" name="sleeve" class="form-control" id="sleeve">
                             <option value="">Select Sleeves</option>
                             {% for item in sleeves %}
-                            <option value="{{item.slug}}">{{item.title}}</option>
+                            <option {% selected_filter request.GET.sleeve item.slug %} value="{{item.slug}}">
+                                {{item.title}}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -66,15 +72,16 @@
                     <!-- Neck Type -->
                     <div class="form-group">
                         <label for="necktype">Neck Types</label>
-                        <select name="necktype" class="form-control" id="necktype">
+                        <select onchange="submitForm()" name="necktype" class="form-control" id="necktype">
                             <option value="">Select Neck Type</option>
-                            {% for neck in neckTypes %}
-                            <option value="{{neck.slug}}">{{neck.title}}</option>
+                            {% for item in neckTypes %}
+                            <option {% selected_filter request.GET.necktype item.slug %} value="{{item.slug}}">
+                                {{item.title}}</option>
                             {% endfor %}
                         </select>
                     </div>
                 </div>
-                <input type="submit" value="submit">
+                <a href="/" class="btn btn-warning btn-sm">Clear Filter</a>
             </form>
         </div>
 
@@ -115,5 +122,12 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    function submitForm() {
+        document.getElementById('filterForm').submit()
+    }
+</script>
 
 {% endblock %}
