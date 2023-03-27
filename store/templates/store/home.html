@@ -1,13 +1,16 @@
 {% extends "./header.html" %}
 {% load tshirt_tags %}
 {% load filter_tags %}
+{% load static %}
 
 {% block content %}
+
 <div class="container-fluid">
     <div class="row m-1">
-        <div class="col col-2 border mt-4 ">
+        <!-- Filter side column -->
+        <div class="col col-2 mt-4 border ">
             <form id="filterForm" action="/">
-                <!-- filters -->
+                <!-- Filters start -->
                 <div>
                     <!-- Ideal_For -->
                     <div class="form-group">
@@ -81,13 +84,15 @@
                         </select>
                     </div>
                 </div>
+                <!-- Filters ends -->
                 <a href="/" class="btn btn-warning btn-sm">Clear Filter</a>
             </form>
         </div>
 
+        <!-- main content column -->
         <div class="col col">
             <div class="row">
-                {% for tees in tshirts %}
+                {% for tees in page_obj %}
                 <div class="col-4 mx-auto mt-4">
                     <div class="card h-100" style="width: 18rem;">
                         <img class="card-img-top" src="{{tees.image.url}}" alt="">
@@ -119,15 +124,45 @@
                 </div>
                 {% endfor %}
             </div>
+
+            <!-- Pagination start -->
+            <nav aria-label="Page navigation example">
+                <ul class="pagination pagination-sm justify-content-end mt-3">
+
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="pl-2" href="?page=1">&laquo; first</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="pl-2" href="?page={{ page_obj.previous_page_number }}">previous</a>
+                    </li>
+                    {% endif %}
+
+                    <li class="page-item">
+                        <p class="pl-2">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</p>
+                    </li>
+
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="pl-2" href="?{{page_url}}{{ page_obj.next_page_number }}">next</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="pl-2" href="?{{page_url}}{{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            <!-- Pagination ends -->
+
         </div>
+        <!-- main content ends -->
+
     </div>
 </div>
 
 
-<script>
-    function submitForm() {
-        document.getElementById('filterForm').submit()
-    }
+<script src='{% static "store/js/home.js"%}'>
+
 </script>
 
 {% endblock %}
